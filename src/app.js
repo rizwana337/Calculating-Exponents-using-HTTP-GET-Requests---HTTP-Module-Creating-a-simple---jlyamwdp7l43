@@ -11,36 +11,21 @@ const server = http.createServer((req, res) => {
       const obj = JSON.parse(chunks)
       const value1 = obj.num1;
       const value2 = obj.num2;
-
-      // Check if num1 is a positive integer
-      if (!Number.isInteger(value1) || value1 <= 0) {
-        res.statusCode = 404;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ error: "num1 must be a positive integer" }));
-        return;
+      
+      // Code for performing exponential operation on numbers
+      if(value1===0){
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end(`The operation cannot be performed`);
+      } else {
+        const result = Math.pow(value1, value2);
+        res.writeHead(200,{ 'Content-Type': 'text/plain' });
+        res.end(`The result is ${result}`);
       }
-
-      // Check if num2 is a non-negative integer
-      if (!Number.isInteger(value2) || value2 < 0) {
-        res.statusCode = 400;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ error: "num2 must be a non-negative integer" }));
-        return;
-      }
-
-      // Calculate the exponential result
-      const result = Math.pow(value1, value2);
-
-      // Return the result in the response body
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'text/plain');
-      res.end(`The result is ${result}`);
-    });
-  }
+    })
+}
 });
 
 module.exports = server;
-
 
 
 // const http = require('http');
